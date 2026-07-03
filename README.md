@@ -16,6 +16,13 @@ Get-CimInstance Win32_OperatingSystem | Select-Object `
     @{Name="Used Memory (GB)";Expression={[math]::Round(($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / 1MB, 2)}},
     @{Name="Memory Usage (%)";Expression={[math]::Round((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / $_.TotalVisibleMemorySize) * 100, 2)}}
 ```
+## 🔍 Process-Level Allocation Tracker
+This command collects active runtime metrics, sorts them dynamically based on Working Set (WS) allocation parameters, and lists the top 20 consumers currently holding execution states.
+
+### PowerShell Script (Get-TopProcesses.ps1)
+```powershell
+Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 20 Name, Id, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}}
+```
 ## 📊 Aggregated Application Grouping
 Browsers using modern multi-process architectures (like Google Chrome or Microsoft Edge) split tabs, extensions, and engines across multiple Process IDs (PIDs). The command below pools these distinct runtime instances to profile total cumulative footprint.
 
