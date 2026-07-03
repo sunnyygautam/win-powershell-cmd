@@ -1,4 +1,4 @@
-## Here are a few more highly useful PowerShell commands to add to your diagnostics toolkit. They will help you track down memory leaks, find hidden background processes, and monitor system performance in real-time.
+## Here are PowerShell commands to track down memory leaks, find hidden background processes, and monitor system performance in real-time.
 
 ### 🏎️ 1. Find the Top 10 Memory-Consuming Processes (Quick View)
 If you don't need a formatted table and just want a fast, raw list of the top 10 memory-hogging processes sorted by Working Set (WS), use this lightweight command:
