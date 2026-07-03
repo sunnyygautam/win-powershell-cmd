@@ -15,3 +15,14 @@ Get-CimInstance Win32_OperatingSystem | Select-Object `
     @{Name="Free Memory (GB)";Expression={[math]::Round($_.FreePhysicalMemory / 1MB, 2)}},
     @{Name="Used Memory (GB)";Expression={[math]::Round(($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / 1MB, 2)}},
     @{Name="Memory Usage (%)";Expression={[math]::Round((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory) / $_.TotalVisibleMemorySize) * 100, 2)}}
+
+## 📊 Aggregated Application Grouping
+Browsers using modern multi-process architectures (like Google Chrome or Microsoft Edge) split tabs, extensions, and engines across multiple Process IDs (PIDs). The command below pools these distinct runtime instances to profile total cumulative footprint.
+
+### PowerShell Script (Get-AggregatedMemory.ps1)
+```powershell
+Get-Process | Group-Object Name | 
+    Select-Object Name, 
+    Count, 
+    @{Name="Total RAM (MB)";Expression={[math]::Round(($_.Group | Measure-Object WS -Sum).Sum / 1MB, 2)}} | 
+    Sort-Object "Total RAM (MB)" -Descending | Select-Object -First 10
